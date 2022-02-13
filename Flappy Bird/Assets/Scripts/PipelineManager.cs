@@ -2,20 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PipelineManager : MonoBehaviour {
+public class PipelineManager : MonoBehaviour
+{
 
-    public GameObject template;
-	// Use this for initialization
-	void Start () {
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public GameObject pipelineTemplate;
+
+    public List<Pipeline> pipelines;
+
+    // Use this for initialization
+    void Start()
+    {
+
+    }
 
     Coroutine coroutine = null;
+
+    public void Init()
+    {
+        for (int i = 0; i < pipelines.Count; ++i)
+        {
+            Destroy(pipelines[i].gameObject);
+        }
+        pipelines.Clear();
+    }
 
     public void StartRun()
     {
@@ -25,13 +34,26 @@ public class PipelineManager : MonoBehaviour {
     public void Stop()
     {
         StopCoroutine(coroutine);
+        for (int i = 0; i < pipelines.Count; ++i)
+        {
+            pipelines[i].enabled = false;
+        }
     }
 
     IEnumerator GeneratePipelines()
     {
-        while (true)
+        for (int i = 0; i < 3; ++i)
         {
-            GeneratePipeline();
+            if (pipelines.Count < 3)
+            {
+                GeneratePipeline();
+
+            }
+            else
+            {
+                pipelines[i].enabled = true;
+                pipelines[i].Init();
+            }
 
             yield return new WaitForSeconds(2f);
         }
@@ -39,6 +61,11 @@ public class PipelineManager : MonoBehaviour {
 
     void GeneratePipeline()
     {
-        Instantiate(template, this.transform);
+        if (pipelines.Count < 3)
+        {
+            GameObject obj = Instantiate(pipelineTemplate, this.transform);
+            Pipeline p = obj.GetComponent<Pipeline>();
+            pipelines.Add(p);
+        }
     }
 }

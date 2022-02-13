@@ -1,50 +1,93 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
-
-    public enum GAME_STATUS
-    {
-        Ready,
-        Gaming,
-        GameOver,
-    }
-    private GAME_STATUS status;
-
-    //public GAME_STATUS Status
-    //{
-    //    get { return status; }
-    //    set { status = value; }
-    //}
-
     public GameObject panelReady;
     public GameObject panelGaming;
     public GameObject panelGameOver;
 
+    public Player player;
+
+    public int score;
+    public Text uiScore1;
+    public Text uiScore2;
+
+    public int Score
+    {
+        get { return score; }
+        set {
+            this.score = value;
+            uiScore1.text = value.ToString();
+            uiScore2.text = value.ToString();
+        }
+    }
+
+
     public PipelineManager pipelineManager;
+    public enum GAME_STATUS
+    {
+        READY,
+        GAMING,
+        GAMEOVER,
+    }
+    GAME_STATUS status;
+    private GAME_STATUS Status
+    {
+        get{return status;}
+        set
+        {
+            status = value;
+            this.UpdateUI();
+        }
+    }
+
 
 	void Start () {
         this.panelReady.SetActive(true);
+        this.Status = GAME_STATUS.READY;
+        this.player.OnDeath += Player_OnDeath;
+        this.player.OnScore = OnPlayerScore;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    void OnPlayerScore(int score)
+    {
+        this.Score += score;
+    }
+
+    private void Player_OnDeath()
+    {
+        this.Status = GAME_STATUS.GAMEOVER;
+        this.pipelineManager.Stop();
+    }
+
+    public void UpdateUI()
+    {
+        this.panelReady.SetActive(this.Status == GAME_STATUS.READY);
+        this.panelGaming.SetActive(this.Status == GAME_STATUS.GAMING);
+        this.panelGameOver.SetActive(this.Status == GAME_STATUS.GAMEOVER);
+        Debug.LogFormat("UpdateUI : {0}", this.Status);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
     public void StartGame()
     {
-        this.status = GAME_STATUS.Gaming;
-        UpdateUI();
+        this.Status = GAME_STATUS.GAMING;
+        Debug.LogFormat("StartGame : {0}", this.Status);
+
         pipelineManager.StartRun();
-        Debug.LogFormat("StartGame : {0}",this.status);
+        player.Fly();
     }
 
-    public void UpdateUI()
+    public void Restart()
     {
-        this.panelReady.SetActive(this.status == GAME_STATUS.Ready);
-        this.panelGaming.SetActive(this.status == GAME_STATUS.Gaming);
-        this.panelGameOver.SetActive(this.status == GAME_STATUS.GameOver);
+        this.Status = GAME_STATUS.READY;
+        this.pipelineManager.Init();
+        this.player.Init();
     }
 }
