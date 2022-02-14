@@ -4,12 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
+    // UI面板
     public GameObject panelReady;
     public GameObject panelGaming;
     public GameObject panelGameOver;
 
+    // 玩家引用
     public Player player;
 
+    // 积分显示
     public int score;
     public Text uiScore1;
     public Text uiScore2;
@@ -67,13 +70,7 @@ public class Game : MonoBehaviour {
         this.panelReady.SetActive(this.Status == GAME_STATUS.READY);
         this.panelGaming.SetActive(this.Status == GAME_STATUS.GAMING);
         this.panelGameOver.SetActive(this.Status == GAME_STATUS.GAMEOVER);
-        Debug.LogFormat("UpdateUI : {0}", this.Status);
     }
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
 
     public void StartGame()
     {
