@@ -8,6 +8,7 @@ public class Game : MonoBehaviour {
     public GameObject panelReady;
     public GameObject panelGaming;
     public GameObject panelGameOver;
+    public Slider hpBar;
 
     // 玩家引用
     public Player player;
@@ -74,6 +75,11 @@ public class Game : MonoBehaviour {
         this.panelGameOver.SetActive(this.Status == GAME_STATUS.GAMEOVER);
     }
 
+    private void Update()
+    {
+        this.hpBar.value = Mathf.Lerp(this.hpBar.value, player.HP, Time.deltaTime);
+    }
+
     public void StartGame()
     {
         this.Status = GAME_STATUS.GAMING;
@@ -82,6 +88,7 @@ public class Game : MonoBehaviour {
         pipelineManager.StartRun();
         unitManager.Begin();
         player.Fly();
+        this.hpBar.value = this.player.HP;
     }
 
     public void Restart()

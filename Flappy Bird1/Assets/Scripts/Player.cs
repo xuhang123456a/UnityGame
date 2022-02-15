@@ -21,11 +21,15 @@ public class Player : MonoBehaviour
 
     private Vector3 initPos;
 
+    public float HP = 10f;
+    private float initHp;
+
     void Start()
     {
         this.ani = this.GetComponent<Animator>();
         this.Idle();
         this.initPos = transform.position;
+        this.initHp = HP;
     }
 
     public void Init()
@@ -33,6 +37,7 @@ public class Player : MonoBehaviour
         this.transform.position = this.initPos;
         this.Idle();
         this.death = false;
+        this.HP = this.initHp;
     }
 
     float fireTimer = 0;
@@ -87,18 +92,21 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("OnTriggerEnter2D: " + collision.gameObject.name + "  " + gameObject.name + " " + Time.time);
-        if (collision.gameObject.name.Equals("scoreArea"))
+        Element bullet = collision.GetComponent<Element>();
+        if (bullet == null)
+            return;
+        Debug.Log("[Player] OnTriggerEnter2D: " + collision.gameObject.name + "  " + gameObject.name + " " + Time.time);
+        if (bullet.side == SIDE.ENEMY)
         {
-
+            this.HP -= bullet.power;
+            if (this.HP <= 0)
+                this.Die();
         }
-        //else
-            //this.Die();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("OnTriggerEnter2D: " + collision.gameObject.name + "  " + gameObject.name + " " + Time.time);
+        Debug.Log("[Player] OnTriggerEnter2D: " + collision.gameObject.name + "  " + gameObject.name + " " + Time.time);
         if (collision.gameObject.name.Equals("scoreArea"))
         {
             if (this.OnScore != null)

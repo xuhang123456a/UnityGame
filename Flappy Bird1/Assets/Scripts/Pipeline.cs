@@ -22,7 +22,7 @@ public class Pipeline : MonoBehaviour {
 	void Update () {
         this.transform.position += new Vector3(-speed, 0) * Time.deltaTime;
         t += Time.deltaTime;
-        if (t > 7f)
+        if (t > 6f)
         {
             t = 0;
             this.Init();

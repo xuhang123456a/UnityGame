@@ -35,7 +35,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4052051147114126}
-  - component: {fileID: 61066358274479960}
   m_Layer: 0
   m_Name: scoreArea
   m_TagString: Untagged
@@ -132,31 +131,6 @@ Transform:
   m_Father: {fileID: 4325660933921602}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61066358274479960
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1405306906954230}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.000000059604645, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.6804048, y: 1.9605713}
-  m_EdgeRadius: 0
 --- !u!61 &61523551986050972
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -219,8 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  minRange: -2
-  maxRange: 2.5
+  range: {x: -2, y: 2}
 --- !u!212 &212404626498837724
 SpriteRenderer:
   m_ObjectHideFlags: 1

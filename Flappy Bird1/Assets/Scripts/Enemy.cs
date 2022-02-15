@@ -19,21 +19,14 @@ public class Enemy : MonoBehaviour
 
     public GameObject bulletTemplate;
 
-    private Vector3 initPos;
+    //private Vector3 initPos;
 
     void Start()
     {
         this.ani = this.GetComponent<Animator>();
         this.Fly();
-        this.initPos = transform.position;
+        //this.initPos = transform.position;
         Destroy(this.gameObject, 5f);
-    }
-
-    public void Init()
-    {
-        this.transform.position = this.initPos;
-        this.Fly();
-        this.death = false;
     }
 
     float fireTimer = 0;
@@ -54,11 +47,6 @@ public class Enemy : MonoBehaviour
             GameObject go = Instantiate(bulletTemplate);
             go.transform.position = this.transform.position;
             go.GetComponent<Element>().direction = -1;
-            SpriteRenderer[] sprs = go.GetComponentsInChildren<SpriteRenderer>();
-            for(int i = 0; i < sprs.Length; ++i)
-            {
-                sprs[i].color = Color.red;
-            }
             fireTimer = 0f;
         }
     }
@@ -78,26 +66,29 @@ public class Enemy : MonoBehaviour
     public void Die()
     {
         this.death = true;
+        this.ani.SetTrigger("Die");
         if (this.OnDeath != null)
         {
             this.OnDeath();
         }
+        Destroy(this.gameObject,0.4f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("OnTriggerEnter2D: " + collision.gameObject.name + "  " + gameObject.name + " " + Time.time);
-        if (collision.gameObject.name.Equals("scoreArea"))
+        Element bullet = collision.GetComponent<Element>();
+        if (bullet == null)
+            return;
+        Debug.Log("[Enemy] OnTriggerEnter2D: " + collision.gameObject.name + "  " + gameObject.name + " " + Time.time);
+        if (bullet.side == SIDE.PLAYER)
         {
-
+            this.Die();
         }
-        //else
-        //this.Die();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("OnTriggerEnter2D: " + collision.gameObject.name + "  " + gameObject.name + " " + Time.time);
+        //Debug.Log("[Enemy] OnTriggerEnter2D: " + collision.gameObject.name + "  " + gameObject.name + " " + Time.time);
         if (collision.gameObject.name.Equals("scoreArea"))
         {
             if (this.OnScore != null)

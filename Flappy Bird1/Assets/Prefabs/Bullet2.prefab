@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4515436980888440}
   - component: {fileID: 212625109677018218}
   - component: {fileID: 114284767796694942}
-  - component: {fileID: 61837588972204792}
+  - component: {fileID: 61761764708033412}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: Bullet2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61837588972204792
+--- !u!61 &61761764708033412
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -80,7 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 8
   direction: 1
-  side: 1
+  side: 2
 --- !u!212 &212625109677018218
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -116,7 +116,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c57ed9f767aaee04b9d8d7c793237fb6, type: 3}
-  m_Color: {r: 0.09002334, g: 0.20330754, b: 0.2205882, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
