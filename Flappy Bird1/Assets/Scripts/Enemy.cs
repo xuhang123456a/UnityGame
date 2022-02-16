@@ -1,42 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class Enemy : MonoBehaviour
-{
-    public Rigidbody2D rigibodyBird;
-    public Animator ani;
-    public float speed = 100f;
-    public float fireRate = 10;
-    private bool death = false;
-
-    public delegate void DeathNotify();
-
+public class Enemy : Unit
+{   // 委托事件 通知
     public event DeathNotify OnDeath;
 
-    public UnityAction<int> OnScore;
+    // 敌人类型
+    public ENEMY_TYPE enemyType;
 
-    public GameObject bulletTemplate;
+    // 字段
+    public Vector2 range;
+    float initY;
 
-    //private Vector3 initPos;
-
-    void Start()
+    override protected void OnStart()
     {
-        this.ani = this.GetComponent<Animator>();
         this.Fly();
-        //this.initPos = transform.position;
         Destroy(this.gameObject, 5f);
+
+        initY = Random.Range(range.x, range.y);
+        this.transform.localPosition = new Vector3(0, initY, 0);
     }
 
-    float fireTimer = 0;
-    void Update()
+    override protected void OnUpdate()
     {
-        if (this.death) return;
+        float y = 0;
+        if (this.enemyType == ENEMY_TYPE.SWING_ENEMY)
+        {
+            y = Mathf.Sin(Time.timeSinceLevelLoad) * 3;
+        }
 
-        fireTimer += Time.deltaTime;
-
-        this.transform.position += new Vector3(-Time.deltaTime * speed, 0, 0);
+        this.transform.position = new Vector3(this.transform.position.x - Time.deltaTime * speed,initY + y, 0);
         Fire();
     }
 
@@ -51,17 +45,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void Idle()
-    {
-        this.rigibodyBird.simulated = false;
-        this.ani.SetTrigger("Idle");
-    }
-
-    public void Fly()
-    {
-        this.rigibodyBird.simulated = true;
-        this.ani.SetTrigger("Fly");
-    }
 
     public void Die()
     {
@@ -71,7 +54,7 @@ public class Enemy : MonoBehaviour
         {
             this.OnDeath();
         }
-        Destroy(this.gameObject,0.4f);
+        Destroy(this.gameObject, 0.4f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

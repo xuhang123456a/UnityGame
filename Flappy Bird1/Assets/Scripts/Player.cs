@@ -3,50 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Player : MonoBehaviour
+public class Player : Unit
 {
-    public Rigidbody2D rigibodyBird;
-    public Animator ani;
-    public float speed = 100f;
-    public float fireRate = 10;
-    private bool death = false;
-
-    public delegate void DeathNotify();
-
+    // 委托事件 通知
     public event DeathNotify OnDeath;
 
-    public UnityAction<int> OnScore;
-
-    public GameObject bulletTemplate;
-
-    private Vector3 initPos;
-
-    public float HP = 10f;
-    private float initHp;
-
-    void Start()
+    override protected void OnStart()
     {
-        this.ani = this.GetComponent<Animator>();
         this.Idle();
-        this.initPos = transform.position;
         this.initHp = HP;
     }
 
-    public void Init()
+    override protected void OnUpdate()
     {
-        this.transform.position = this.initPos;
-        this.Idle();
-        this.death = false;
-        this.HP = this.initHp;
-    }
-
-    float fireTimer = 0;
-    void Update()
-    {
-        if (this.death) return;
-
-        fireTimer += Time.deltaTime;
-
+        Debug.Log("Player Player Player Update");
         Vector2 pos = this.transform.position;
         pos.x += Input.GetAxis("Horizontal") * Time.deltaTime * speed;
         pos.y += Input.GetAxis("Vertical") * Time.deltaTime * speed;
@@ -64,21 +34,8 @@ public class Player : MonoBehaviour
         {
             GameObject go = Instantiate(bulletTemplate);
             go.transform.position = this.transform.position;
-
             fireTimer = 0f;
         }
-    }
-
-    public void Idle()
-    {
-        this.rigibodyBird.simulated = false;
-        this.ani.SetTrigger("Idle");
-    }
-
-    public void Fly()
-    {
-        this.rigibodyBird.simulated = true;
-        this.ani.SetTrigger("Fly");
     }
 
     public void Die()
@@ -93,20 +50,26 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Element bullet = collision.GetComponent<Element>();
-        if (bullet == null)
+        Enemy enemy = collision.GetComponent<Enemy>();
+        if (bullet == null && enemy == null)
             return;
         Debug.Log("[Player] OnTriggerEnter2D: " + collision.gameObject.name + "  " + gameObject.name + " " + Time.time);
-        if (bullet.side == SIDE.ENEMY)
+        if (bullet != null && bullet.side == SIDE.ENEMY)
         {
             this.HP -= bullet.power;
             if (this.HP <= 0)
                 this.Die();
         }
+        if(enemy != null)
+        {
+            this.HP = 0;
+            this.Die();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("[Player] OnTriggerEnter2D: " + collision.gameObject.name + "  " + gameObject.name + " " + Time.time);
+        //Debug.Log("[Player] OnTriggerEnter2D: " + collision.gameObject.name + "  " + gameObject.name + " " + Time.time);
         if (collision.gameObject.name.Equals("scoreArea"))
         {
             if (this.OnScore != null)

@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Element : MonoBehaviour {
+	// 字段
 	public float speed;
 	public int direction = 1;
-	public SIDE side;
 	public float power = 1f;
+
+	// 子弹类型
+	public SIDE side;
+
 	void Start () {
 		//Destroy(this.gameObject, 30f);
 	}

@@ -2,12 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitManager : MonoBehaviour {
-	public GameObject enemyTemplate;
-	public List<Enemy> enemies = new List<Enemy>();
+public class UnitManager : MonoBehaviour
+{
+    // 组件
+    public GameObject enemy1Template;
+    public GameObject enemy2Template;
+    public GameObject enemy3Template;
 
-    Coroutine coroutine = null;
+    // 字段
+    public float speed1;
+    public float speed2;
+    public float speed3;
+    int timer1 = 0;
+    int timer2 = 0;
+    int timer3 = 0;
     public Vector2 range;
+
+    // 敌人的集合用于管理敌人
+    public List<Enemy> enemies = new List<Enemy>();
+
+    // 协程
+    Coroutine coroutine = null;
 
     public void Begin()
     {
@@ -19,21 +34,36 @@ public class UnitManager : MonoBehaviour {
         StopCoroutine(coroutine);
         enemies.Clear();
     }
+
     IEnumerator GenerateEnemies()
     {
         while (true)
         {
-            GenerateEnemy();
-            yield return new WaitForSeconds(2f);
+            if (timer1 > speed1)
+            {
+                GenerateEnemy(enemy1Template);
+                timer1 = 0;
+            }
+            if (timer2 > speed2)
+            {
+                GenerateEnemy(enemy2Template);
+                timer2 = 0;
+            }
+            if (timer3 > speed3)
+            {
+                GenerateEnemy(enemy3Template);
+                timer3 = 0;
+            }
+            timer1++;
+            timer2++;
+            timer3++;
+            yield return new WaitForSeconds(1f);
         }
     }
-    void GenerateEnemy()
+    void GenerateEnemy(GameObject template)
     {
-        GameObject obj = Instantiate(enemyTemplate, this.transform);
+        GameObject obj = Instantiate(template, this.transform);
         Enemy p = obj.GetComponent<Enemy>();
         enemies.Add(p);
-
-        float y = Random.Range(range.x, range.y);
-        obj.transform.localPosition = new Vector3(0, y, 0);
     }
 }

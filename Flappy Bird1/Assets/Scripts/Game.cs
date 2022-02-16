@@ -14,10 +14,9 @@ public class Game : MonoBehaviour {
     public Player player;
 
     // 积分显示
-    public int score;
     public Text uiScore1;
     public Text uiScore2;
-
+    public int score;
     public int Score
     {
         get { return score; }
@@ -28,7 +27,7 @@ public class Game : MonoBehaviour {
         }
     }
 
-
+    // 管理类
     public PipelineManager pipelineManager;
     public UnitManager unitManager;
     public enum GAME_STATUS
@@ -47,7 +46,6 @@ public class Game : MonoBehaviour {
             this.UpdateUI();
         }
     }
-
 
 	void Start () {
         this.panelReady.SetActive(true);

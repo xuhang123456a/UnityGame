@@ -9,3 +9,10 @@ public enum SIDE
     PLAYER,
     ENEMY,
 }
+
+public enum ENEMY_TYPE
+{
+    NORMAL_ENEMY,
+    SWING_ENEMY,
+
+}

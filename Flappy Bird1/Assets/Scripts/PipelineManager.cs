@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class PipelineManager : MonoBehaviour
 {
+    // 组件
     public GameObject pipelineTemplate;
     public List<Pipeline> pipelines;
 
+    // 协程
     Coroutine coroutine = null;
 
     public void Init()
