@@ -18,7 +18,7 @@ public class UnitManager : MonoBehaviour
     int timer3 = 0;
     public Vector2 range;
 
-    // 敌人的集合用于管理敌人
+    // 敌人的集合，用于管理敌人
     public List<Enemy> enemies = new List<Enemy>();
 
     // 协程

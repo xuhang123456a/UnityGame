@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ItemModel
 {
-    // 定义
+    // 定义（静态数据，读表获取）
     public ItemDefine itemDefine;
 
-    // 数量
+    // 数量（动态数据）
     public int count;
 
     public ItemModel(ItemDefine itemDefine, int count)

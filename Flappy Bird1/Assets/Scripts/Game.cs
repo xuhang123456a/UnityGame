@@ -30,6 +30,8 @@ public class Game : MonoBehaviour {
     // 管理类
     public PipelineManager pipelineManager;
     public UnitManager unitManager;
+
+    // 游戏状态
     public enum GAME_STATUS
     {
         READY,
@@ -54,16 +56,16 @@ public class Game : MonoBehaviour {
         this.player.OnScore = OnPlayerScore;
 	}
 
-    void OnPlayerScore(int score)
-    {
-        this.Score += score;
-    }
-
     private void Player_OnDeath()
     {
         this.Status = GAME_STATUS.GAMEOVER;
         this.pipelineManager.Stop();
         this.unitManager.Stop();
+    }
+
+    private void OnPlayerScore(int score)
+    {
+        this.Score += score;
     }
 
     public void UpdateUI()
