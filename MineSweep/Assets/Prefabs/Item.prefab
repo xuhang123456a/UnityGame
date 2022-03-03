@@ -57,7 +57,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc9142788e717684b9c7e112c5c42b1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stat: 0
+  isShow: 0
+  itemType: 0
   text: {fileID: 114288900203523910}
 --- !u!114 &114120088992960568
 MonoBehaviour:
