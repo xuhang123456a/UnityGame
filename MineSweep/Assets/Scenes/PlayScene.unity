@@ -296,9 +296,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd5ff79ec35f24b45869dddb7a0c279b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allCount: 500
+  row: 30
+  col: 20
   item: {fileID: 1418859079176112, guid: d85ff0b8c560db545a78f7167bad4b47, type: 2}
   item_parent: {fileID: 1843473767}
+  mineCount: 500
 --- !u!4 &226695596
 Transform:
   m_ObjectHideFlags: 0

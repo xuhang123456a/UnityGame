@@ -6,10 +6,14 @@ using UnityEngine.EventSystems;
 
 public class UI_Item : MonoBehaviour,IPointerEnterHandler,IPointerClickHandler,IPointerExitHandler
 {
-	public static UI_Item Instance;
-	public ITEM_STAT stat;
+	// 初始不展示，点击才展示
+	public bool isShow;
+	// 类型
+	public ITEM_TYPE itemType;
+	
 	public Text text;
-	private Color color;
+	// 初始颜色
+	private Color defaultColor;
     private int num;
 	public int Num
     {
@@ -22,14 +26,28 @@ public class UI_Item : MonoBehaviour,IPointerEnterHandler,IPointerClickHandler,I
 			num = value;
         }
     }
+	// 唯一标识
+	private int id;
+	public int Id
+    {
+		get
+		{
+			return id;
+		}
+		set
+		{
+			id = value;
+		}
+	}
 
 	void Awake()
     {
-		Instance = this;
-    }
+		itemType = ITEM_TYPE.NONE;
+		text.text = "";
+		defaultColor = GetComponent<Image>().color;
+	}
 
 	void Start () {
-		stat = ITEM_STAT.NONE;
 	}
 
 	void Init()
@@ -38,39 +56,76 @@ public class UI_Item : MonoBehaviour,IPointerEnterHandler,IPointerClickHandler,I
     }
 
 	void Update () {
-        switch (stat)
+        switch (itemType)
         {
-			case ITEM_STAT.NONE:
+			case ITEM_TYPE.NONE:
 				text.text = "";
 				break;
-			case ITEM_STAT.NUM:
-				text.text = Num.ToString();
+			case ITEM_TYPE.NUM:
+				if (isShow)
+				{
+					if (Num != 0)
+					{
+						text.text = Num.ToString();
+					}
+                    else
+                    {
+						text.text = "";
+					}
+				}
 				break;
-			case ITEM_STAT.FLAG:
-				text.text = "旗子";
+			case ITEM_TYPE.FLAG:
+                if (!isShow)
+				{
+					text.text = "旗子";
+				}
 				break;
-			case ITEM_STAT.MINE:
-				text.text = "炸弹";
+			case ITEM_TYPE.MINE:
+                if (isShow)
+				{
+					text.text = "炸弹";
+				}
 				break;
+			default:
+				break;
+		}
+
+        if (isShow)
+        {
+			Image image = GetComponent<Image>();
+			image.color = Color.yellow;
 		}
 	}
 
+	public void ChangeItemStat(ITEM_TYPE newStat)
+    {
+		this.itemType = newStat;
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
-		Image image = GetComponent<Image>();
-		color = image.color;
-		image.color = Color.red;
+		if (!isShow)
+		{
+			Image image = GetComponent<Image>();
+			image.color = Color.red;
+		}
+		else 
+		{
+
+		}
 	}
 	public void OnPointerExit(PointerEventData eventData)
 	{
 		Image image = GetComponent<Image>();
-		image.color = color;
+		image.color = defaultColor;
 	}
 
 	public void OnPointerClick(PointerEventData eventData)
     {
-		Image image = GetComponent<Image>();
-		image.color = color;
+        if (!isShow)
+		{
+			this.isShow = true;
+			GameLogic.Instance.OnClickItem(Id);
+		}
 	}
-
 }
